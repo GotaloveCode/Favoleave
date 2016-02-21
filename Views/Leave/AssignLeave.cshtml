@@ -1,0 +1,299 @@
+﻿@model Leave.Models.AssignLeaveVM
+
+@{
+    ViewBag.Title = "Leave Applications";
+}
+
+<div class="container">
+
+    @using (Html.BeginForm("AssignLeave", "Leave", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Leave Application</legend>
+            <div class="row">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.employee_id, new { @class = "control-label" })
+                    @Html.HiddenFor(model => model.employee_id)
+                </div>
+                <div class="col-md-2">
+                    @ViewBag.names
+                </div>
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.leave_type_id, new { @class = "control-label" })
+                </div>
+                <div class="col-md-2">
+                    @Html.DropDownListFor(model => model.leave_type_id, Model.leave_types, null, new { @class = "input-sm" })
+                </div>
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.half_days, new { @class = "control-label" })
+                </div>
+                <div class="col-md-1">
+                    @Html.TextBoxFor(model => model.half_days, new { @class = "input-sm" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    @Html.ValidationMessageFor(model => model.leave_type_id)
+                </div>
+                <div class="form-group">
+                    @Html.ValidationMessageFor(model => model.holidays)
+                </div>
+                <div class="form-group">
+                    @Html.ValidationMessageFor(model => model.half_days)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.days_used, new { @class = "control-label" })
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.days_used, new { @class = "input-sm", @readonly = "true" })
+                </div>
+                <div class="col-md-1">
+                    <label class="control-label">Days Approved </label>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" id="daysApproved" class="input-sm" readonly placeholder="approved days" />
+                </div>
+                <div class="col-md-1">
+                    @Html.Label("Available Days", new { @class = "control-label" })
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBox("available", null, new { @class = "input-sm", @id = "available", @readonly = "true" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    @Html.ValidationMessageFor(model => model.days_used)
+                </div>
+                <div class="form-group">
+                    @Html.ValidationMessageFor(model => model.half_days)
+                </div>
+                <div class="form-group">
+                    @Html.ValidationMessageFor(model => model.days_used)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <label class="control-label">Days Between</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" id="datediff" class="input-sm" readonly placeholder="days btw start & end date" />
+                </div>
+                <div class="col-md-1">
+                    <label class="control-label">Work Weekends</label>
+                </div>
+                <div class="col-md-2">
+                    @Html.CheckBoxFor(model => model.work_weekend)
+                </div>
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.holidays, new { @class = "control-label" })
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.holidays, new { @class = "input-sm", @readonly = "true" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.startdate, new { @class = "control-label" })
+                        <div class='input-group date col-md-9' id='datetimepicker1'>
+                            @Html.TextBoxFor(model => model.startdate, new { @class = "form-control", @Value = Model.startdate.ToString("d MMM yyyy") })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.enddate, new { @class = "control-label" })
+                        <div class='input-group date col-md-9' id='datetimepicker1'>
+                            @Html.TextBoxFor(model => model.enddate, new { @class = "form-control", @Value = Model.enddate.ToString("d MMM yyyy") })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.comments, new { @class = "control-label", @rows = "10" })
+                    @Html.TextAreaFor(model => model.comments, new { rows = "3", cols = "80" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(model => model.days_used)
+            </div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(model => model.comments)
+            </div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(model => model.startdate)
+            </div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(model => model.enddate)
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" id="Create" class="btn btn-success" />
+                @Html.ActionLink("Back to List", "Leavelist", null, new { @class = "btn btn-primary" })
+            </div>
+        </fieldset>
+    }
+
+
+</div>
+@section css{
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/bootstrap-datepicker.min.js")
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script type="text/javascript" language="JavaScript">
+        $(function () {
+            setup(); //setup function
+            getLeave(); //get approved days on load
+            changes(); //handle any change events
+
+        });
+        //setup
+        function setup() {
+            $("#startdate").datepicker({
+                format: 'd M yyyy',
+                autoclose: true
+            });
+            $("#enddate").datepicker({
+                format: 'd M yyyy',
+                autoclose: true
+            });
+            $('#half_days').keyup(function () {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+            });
+
+        }
+
+        function changes() {
+            $("#leave_type_id").change(function () {
+                getLeave();
+            });
+
+            $("#enddate").change(function () {
+                daysbtw();
+                getHolidays();
+            });
+
+            $("#work_weekend").change(function () {
+                daysbtw();
+            });
+        }
+
+        function daysbtw() {
+            start_date = new Date($('#startdate').val());
+            end_date = new Date($('#enddate').val());
+
+            var diff_dys = Math.round((end_date - start_date) / (1000 * 60 * 60 * 24)); // milliseconds to days)
+            diff_dys = diff_dys + 1
+
+            if (!$('#work_weekend').is(":checked"))
+                diff_dys = diff_dys - countWeekendDays();
+
+            $('#datediff').val(diff_dys);
+
+            if (diff_dys > parseInt($("#available").val()))
+                $("#Create").hide();
+            else
+                $("#Create").show();
+
+        }
+
+        function getHolidays() {
+            $.ajax({
+                url: '@Url.Action("getHolidays", "Holiday")',
+                type: 'Get',
+                data: {
+                    start: $('#startdate').val(),
+                    end: $('#enddate').val(),
+                },
+                dataType: 'json',
+                statusCode: {
+                    404: function () {
+                        toastr["error"]('Error 404: Could not contact server.');
+                    },
+                    500: function () {
+                        toastr["error"]('Error 500: A server-side error has occurred.');
+                    }
+                },
+                error: function () {
+                    toastr["error"]('A problem has occurred.');
+                },
+                success: function (data) {
+                    $('#holidays').val(data);
+                }
+            });
+        }
+
+        function getLeave() //gets accrualtype,daystaken,approved
+        {
+            $.ajax({
+                url: '@Url.Action("GetDays", "Leave")',
+                type: 'Get',
+                data: {
+                    id: $("#leave_type_id").val(),
+                    empid: $('#employee_id').val(),
+                },
+                dataType: 'json',
+                statusCode: {
+                    404: function () {
+                        toastr["error"]('Error 404:Could not contact server.');
+                    },
+                    500: function () {
+                        toastr["error"]('Error 500:A server-side error has occurred.');
+                    }
+                },
+                error: function () {
+                    toastr["error"]('A problem has occurred.');
+                },
+                success: function (data) {
+                    var available = data[0] - data[1];
+                    var totalLeaveDays = data[1];
+                    var daysApproved = data[3]; //future days approved
+                    var daystaken = data[1] - data[3];
+
+                    if (available <= 0) {
+                        if (data[2] == 1) {
+                            toastr["warning"]("Leave days taken exceeded accrued days");
+                            $("#Create").hide();
+                        } else {
+                            $("#Create").show();
+                        }
+
+                    } else {
+                        $("#Create").show();
+                    }
+
+                    $("#available").val(available);
+                    $('#days_used').val(daystaken); //data[1];
+                    $('#daysApproved').val(daysApproved);
+                },
+
+            });
+        }
+
+        function countWeekendDays() {
+            var d0 = new Date($('#startdate').val());
+            var d1 = new Date($('#enddate').val());
+            var ndays = 1 + Math.round((d1.getTime() - d0.getTime()) / (24 * 3600 * 1000));
+            var nsaturdays = Math.floor((d0.getDay() + ndays) / 7);
+            return 2 * nsaturdays + (d0.getDay() == 0) - (d1.getDay() == 6);
+        }
+
+
+    </script>
+}
+

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Leave.Models.user_requestVM>
+
+<fieldset style="border:1px outset; background-color:#f8f8f8; padding:4px;">
+    <legend><a href="#"> User Accounts Pending Activation <span class="label label-primary">@Html.Raw(Model.Count())</span></a></legend>
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+            var data = string.Format("{0}", @Html.DisplayFor(modelItem => item.employeename));
+            <li class="list-group-item">
+                @Html.ActionLink(data, "Edit", "User", new { id = item.id }, null)
+            </li>
+        }
+    </ul>
+</fieldset>

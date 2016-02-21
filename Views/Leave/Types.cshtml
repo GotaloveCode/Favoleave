@@ -1,0 +1,101 @@
+﻿@model Leave.Models.leave_type
+
+@{
+    ViewBag.Title = "Types";
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Leave Types</h4>
+                </div>
+                @if (@TempData["message"] != null)
+                {
+                    <div class="alert alert-warning">@TempData["message"]</div>
+                }
+                <table class="table table-responsive" id="leavetype">
+                    <tr>
+                        <td colspan="5">
+                            <div>
+                               @using (Html.BeginForm("Types","Leave",FormMethod.Post, new { @class = "form-inline" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true,"")
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.name, new { @class = "control-label" })
+                                        @Html.TextBoxFor(m => m.name, new { @class = "input-sm" })
+                                        @Html.ValidationMessageFor(m => m.name)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.days, new { @class = "control-label" })
+                                        @Html.TextBoxFor(model => model.days, new { @class = "input-sm" })
+                                        @Html.ValidationMessageFor(model => model.days)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.accrual_type, new { @class = "control-label" })
+                                        @Html.DropDownList("accrual_type", new List<SelectListItem>
+                                                 {
+                                                    new SelectListItem{ Text="None", Value = "None" },
+                                                    new SelectListItem{ Text="By Employment Date", Value = "EmploymentDate" },
+                                                    new SelectListItem{ Text="By Period Date", Value = "PeriodDate" }
+                                                 }, new { @class = "input-sm" })
+                                            @Html.ValidationMessageFor(model => model.accrual_type)
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="submit" value="Create" class="btn btn-success"/>
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <th>
+                           Leave Types
+                        </th>
+                        <th>
+                            Days
+                        </th>
+                        <th>
+                            Accrual
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+
+
+                    @foreach (var item in ViewBag.types)
+                    {
+                        <tr>
+                            <td>
+                                @item.name
+                            </td>
+                            <td>
+                                @item.days
+                            </td>
+                            <td>
+                                @item.accrual_type
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "EditTypes", new { id = item.id }, new { @class = "glyphicon glyphicon-edit" })
+                            </td>
+                            <td>
+                                @Html.ActionLink("Delete", "DeleteTypes", new { id = item.id }, new { @class = "glyphicon glyphicon-trash", onclick = "return confirm('Are you sure you want to delete this leave type?');" })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

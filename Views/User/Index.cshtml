@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Leave.Models.UserVM>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+@using GridMvc.Html
+<div class="container">
+    <h3>@ViewBag.Title</h3>
+    <div class="grid-wrap">
+        @Html.Grid(Model).Columns(columns =>
+                        {
+                            columns.Add(model => model.username).Sortable(true).Titled("Username").Format("{0: dd/MM/yyyy}");
+                            columns.Add(model => model.Employee).Sortable(true).Titled("Employee").Format("{0: dd/MM/yyyy}");
+                            columns.Add(model => model.Role).Sortable(true);
+                            columns.Add(model => model.status).Encoded(false).Sanitized(false).Sortable(true).Titled("Active").RenderValueAs(c => Html.CheckBox("active", @c.status == 1 ? true : false));
+                            columns.Add().Titled("Actions").Encoded(false).Sanitized(false).RenderValueAs(c => "<a href='/User/Edit/" + @c.id + "' class='glyphicon glyphicon-edit' >Edit</a>");
+                            columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c => "<a href='/Leave/Delete/" + @c.id + "' class='glyphicon glyphicon-trash' onclick='ConfirmDelete()'>Delete</a>");
+                        }).WithPaging(20)
+    </div>
+</div>
+<script>
+    function ConfirmDelete() {
+        var x = confirm("Are you sure you want to delete this record?");
+        if (x)
+            return true;
+        else
+            return false;
+    }
+
+</script>
+@section Scripts {
+    @Styles.Render("~/Content/gridmvc.css")
+
+}
+

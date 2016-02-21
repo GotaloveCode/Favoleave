@@ -1,0 +1,68 @@
+﻿@model Leave.Models.EditUserVM
+
+@{
+    ViewBag.Title = "Edit Users";
+}
+
+<div class="container">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true,"Correct the below errors to proceed")
+
+        <fieldset>
+            <legend>Edit User </legend>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.username, new { @class = "col-xs-2 control-label" })
+                @Html.EditorFor(model => model.username, new { @class = "input-sm" })
+                @Html.ValidationMessageFor(model => model.username)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Employee, new { @class = "col-xs-2 control-label" })
+                @Html.TextBoxFor(model => model.Employee, new { @class = "input-sm", disabled = "disabled" })
+                @Html.HiddenFor(model => model.Employee)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.role_id, new { @class = "col-xs-2 control-label" })
+                @Html.DropDownListFor(model => model.role_id, Model.user_roles, new { @class = "input-sm" })
+                @Html.ValidationMessageFor(model => model.role_id)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.status, new { @class = "col-xs-2 control-label" })
+                @{
+        var list = new SelectList(new[]
+    {
+        new {ID="0", Name="inactive"},
+        new {ID="1", Name="active"},
+    },
+            "ID", "Name", Model.status);
+                }
+                @Html.DropDownList("status", list, new { @class = "input-sm" })
+                @Html.ValidationMessageFor(model => model.status)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.reset_password, new { @class = "col-xs-2 control-label" })
+                @Html.CheckBoxFor(model => model.reset_password)
+                @Html.ValidationMessageFor(model => model.reset_password)
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-6 col-xs-offset-2">
+                    <input type="submit" value="Save" class="btn btn-success" />
+                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+        </fieldset>
+    }
+
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

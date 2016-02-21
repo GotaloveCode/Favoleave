@@ -1,0 +1,53 @@
+﻿@model Leave.Models.leave_type
+
+@{
+    ViewBag.Title = "Edit Types";
+}
+<div class="container">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Edit Leave Type</legend>
+
+            @Html.HiddenFor(model => model.id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.name,new{@class="control-label"})
+            </div>
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.name, new { @class = "input-sm" })
+                @Html.ValidationMessageFor(model => model.name)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.days, new { @class = "control-label" })
+            </div>
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.days, new { @class = "input-sm" })
+                @Html.ValidationMessageFor(model => model.days)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.accrual_type, new { @class = "control-label" })
+            </div>
+            <div class="form-group">
+                @Html.DropDownList("accrual_type", new List<SelectListItem>
+                                                 {
+                                                    new SelectListItem{ Text="None", Value = "None" },
+                                                    new SelectListItem{ Text="By Employment Date", Value = "EmploymentDate" },
+                                                    new SelectListItem{ Text="By Period Date", Value = "PeriodDate" }
+                                                 }, new { @class = "input-sm" })
+                @Html.ValidationMessageFor(model => model.accrual_type)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+                @Html.ActionLink("Back to List", "Types", null, new { @class = "btn btn-primary" })
+            </div>
+        </fieldset>
+    }  
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

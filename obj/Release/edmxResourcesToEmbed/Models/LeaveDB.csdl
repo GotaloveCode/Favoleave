@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LeaveModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="LeaveEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="leave_entitlement" EntityType="LeaveModel.leave_entitlement" />
+    <EntitySet Name="leave_type" EntityType="LeaveModel.leave_type" />
+    <EntitySet Name="users" EntityType="LeaveModel.user" />
+    <EntitySet Name="user_role" EntityType="LeaveModel.user_role" />
+    <AssociationSet Name="FK_leave_entitlement_leave_type" Association="LeaveModel.FK_leave_entitlement_leave_type">
+      <End Role="leave_type" EntitySet="leave_type" />
+      <End Role="leave_entitlement" EntitySet="leave_entitlement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_user_role" Association="LeaveModel.FK_user_user_role">
+      <End Role="user_role" EntitySet="user_role" />
+      <End Role="user" EntitySet="users" />
+    </AssociationSet>
+    <EntitySet Name="Employees" EntityType="LeaveModel.Employee" />
+    <AssociationSet Name="FK_employees_leave_entitlement" Association="LeaveModel.FK_employees_leave_entitlement">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="leave_entitlement" EntitySet="leave_entitlement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_Employees" Association="LeaveModel.FK_user_Employees">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="user" EntitySet="users" />
+    </AssociationSet>
+    <EntitySet Name="leave_period" EntityType="LeaveModel.leave_period" />
+    <EntitySet Name="holidays" EntityType="LeaveModel.holiday" />
+    <EntitySet Name="leaves" EntityType="LeaveModel.leave" />
+    <AssociationSet Name="FK_leave_Employees" Association="LeaveModel.FK_leave_Employees">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="leave" EntitySet="leaves" />
+    </AssociationSet>
+    <AssociationSet Name="FK_leave_leave_period" Association="LeaveModel.FK_leave_leave_period">
+      <End Role="leave_period" EntitySet="leave_period" />
+      <End Role="leave" EntitySet="leaves" />
+    </AssociationSet>
+    <AssociationSet Name="FK_leave_leave_type" Association="LeaveModel.FK_leave_leave_type">
+      <End Role="leave_type" EntitySet="leave_type" />
+      <End Role="leave" EntitySet="leaves" />
+    </AssociationSet>
+    <EntitySet Name="errors" EntityType="LeaveModel.error" />
+  </EntityContainer>
+  <EntityType Name="leave_entitlement">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="employee_id" Type="Int32" Nullable="false" />
+    <Property Name="leave_type_id" Type="Int32" Nullable="false" />
+    <Property Name="from_date" Type="DateTime" Precision="3" />
+    <Property Name="to_date" Type="DateTime" Precision="3" />
+    <Property Name="created_by_id" Type="Int32" />
+    <NavigationProperty Name="leave_type" Relationship="LeaveModel.FK_leave_entitlement_leave_type" FromRole="leave_entitlement" ToRole="leave_type" />
+    <Property Name="credited_date" Type="DateTime" Precision="3" />
+    <Property Name="no_of_days" Type="Double" />
+    <NavigationProperty Name="Employee" Relationship="LeaveModel.FK_employees_leave_entitlement" FromRole="leave_entitlement" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="leave_type">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="days" Type="Double" Nullable="false" />
+    <NavigationProperty Name="leave_entitlement" Relationship="LeaveModel.FK_leave_entitlement_leave_type" FromRole="leave_type" ToRole="leave_entitlement" />
+    <Property Name="accrual_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="leaves" Relationship="LeaveModel.FK_leave_leave_type" FromRole="leave_type" ToRole="leave" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="employee_id" Type="Int32" Nullable="false" />
+    <Property Name="username" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="passwordsalt" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="role_id" Type="Int32" Nullable="false" />
+    <Property Name="status" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="user_role" Relationship="LeaveModel.FK_user_user_role" FromRole="user" ToRole="user_role" />
+    <NavigationProperty Name="Employee" Relationship="LeaveModel.FK_user_Employees" FromRole="user" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="user_role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="users" Relationship="LeaveModel.FK_user_user_role" FromRole="user_role" ToRole="user" />
+  </EntityType>
+  <Association Name="FK_leave_entitlement_leave_type">
+    <End Type="LeaveModel.leave_type" Role="leave_type" Multiplicity="1" />
+    <End Type="LeaveModel.leave_entitlement" Role="leave_entitlement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="leave_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="leave_entitlement">
+        <PropertyRef Name="leave_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_user_role">
+    <End Type="LeaveModel.user_role" Role="user_role" Multiplicity="1" />
+    <End Type="LeaveModel.user" Role="user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_role">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="role_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmpCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="SurName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OtherNames" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DateOfEmployment" Type="DateTime" Precision="3" />
+    <Property Name="IsDisengaged" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="leave_entitlement" Relationship="LeaveModel.FK_employees_leave_entitlement" FromRole="Employee" ToRole="leave_entitlement" />
+    <NavigationProperty Name="users" Relationship="LeaveModel.FK_user_Employees" FromRole="Employee" ToRole="user" />
+    <NavigationProperty Name="leaves" Relationship="LeaveModel.FK_leave_Employees" FromRole="Employee" ToRole="leave" />
+  </EntityType>
+  <Association Name="FK_employees_leave_entitlement">
+    <End Type="LeaveModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="LeaveModel.leave_entitlement" Role="leave_entitlement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="leave_entitlement">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_Employees">
+    <End Type="LeaveModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="LeaveModel.user" Role="user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="leave_period">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="startdate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="enddate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="active" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="leaves" Relationship="LeaveModel.FK_leave_leave_period" FromRole="leave_period" ToRole="leave" />
+  </EntityType>
+  <EntityType Name="holiday">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="recurs" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="leave">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="startdate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="enddate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="days" Type="Double" Nullable="false" />
+    <Property Name="comments" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="leave_type_id" Type="Int32" Nullable="false" />
+    <Property Name="employee_id" Type="Int32" Nullable="false" />
+    <Property Name="date_applied" Type="DateTime" Precision="3" />
+    <Property Name="period_id" Type="Int32" Nullable="false" />
+    <Property Name="half_days" Type="Double" />
+    <Property Name="work_weekends" Type="Boolean" />
+    <NavigationProperty Name="Employee" Relationship="LeaveModel.FK_leave_Employees" FromRole="leave" ToRole="Employee" />
+    <NavigationProperty Name="leave_period" Relationship="LeaveModel.FK_leave_leave_period" FromRole="leave" ToRole="leave_period" />
+    <NavigationProperty Name="leave_type" Relationship="LeaveModel.FK_leave_leave_type" FromRole="leave" ToRole="leave_type" />
+  </EntityType>
+  <Association Name="FK_leave_Employees">
+    <End Type="LeaveModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="LeaveModel.leave" Role="leave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="leave">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_leave_leave_period">
+    <End Type="LeaveModel.leave_period" Role="leave_period" Multiplicity="1" />
+    <End Type="LeaveModel.leave" Role="leave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="leave_period">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="leave">
+        <PropertyRef Name="period_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_leave_leave_type">
+    <End Type="LeaveModel.leave_type" Role="leave_type" Multiplicity="1" />
+    <End Type="LeaveModel.leave" Role="leave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="leave_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="leave">
+        <PropertyRef Name="leave_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="error">
+    <Key>
+      <PropertyRef Name="ErrorId" />
+    </Key>
+    <Property Name="ErrorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Query" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Parameters" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CommandType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TotalSeconds" Type="Double" />
+    <Property Name="Exception" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="InnerException" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="RequestId" Type="Int32" />
+    <Property Name="FileName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+  </EntityType>
+</Schema>

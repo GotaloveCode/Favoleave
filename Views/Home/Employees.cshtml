@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Leave.Models.Employee>
+
+@{
+    ViewBag.Title = "Employees";
+}
+
+@using GridMvc.Html
+<div class="container">
+    <h3>@ViewBag.Title</h3>
+    <div class="grid-wrap">
+        @Html.Grid(Model).Columns(columns =>
+                        {
+                            columns.Add(model => model.EmpCode).Sortable(true).Filterable(true);
+                            columns.Add(model => model.SurName).Sortable(true).Filterable(true);
+                            columns.Add(model => model.OtherNames).Sortable(true).Filterable(true);
+                            columns.Add(model => model.DateOfEmployment).Sortable(true).Filterable(true).Format("{0:dd MMM yyyy}");
+                            //columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c => "<a href='/Leave/EditLeave/" + @c.id + "' class='glyphicon glyphicon-edit' >Edit</a>");
+                            //columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c => "<a href='/Leave/DeleteLeave/" + @c.id + "' class='glyphicon glyphicon-trash' onclick='ConfirmDelete()'>Delete</a>");
+                        }).WithPaging(20).WithMultipleFilters()
+    </div>
+</div>
+
+@section Scripts {
+   @Styles.Render("~/Content/gridmvc.css")
+@Styles.Render("~/Content/bootstrap-datepicker.min.css")
+@Scripts.Render("~/Scripts/gridmvc.min.js")
+@Scripts.Render("~/Scripts/bootstrap-datepicker.js")
+}

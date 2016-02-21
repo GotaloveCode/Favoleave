@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Leave.Models.EntitlementVM>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Entitlement";
+}
+<div class="container">
+    <h4>Leave Entitlement</h4>
+    @if (@TempData["message"] != null)
+    {
+        <div class="alert alert-warning">@TempData["message"]</div>
+    }
+    <div class="input-group left">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+        @Html.ActionLink("Create New", "AddEntitlement", null, new { @class = "btn btn-info" })
+    </div>
+    <div class="grid-wrap">
+        @Html.Grid(Model).Columns(columns =>
+                        {
+                            columns.Add(model => model.employee).Sortable(true).Titled("Employees").Filterable(true);
+                            columns.Add(model => model.leave_type).Sortable(true).Titled("Leave Types").Filterable(true);
+                            columns.Add(model => model.valid_period).Sortable(true).Titled("Valid Between").Filterable(true);
+                            columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c =>  @Html.ActionLink("Edit", "EditEntitlement", "Leave",   new { id= @c.leave_entitlement_id }, new { @class="glyphicon glyphicon-edit"}));
+                            columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c => Html.ActionLink("Delete","DeleteEntitlement",
+    new { id = c.leave_entitlement_id }, 
+    new { onclick = "return confirm('Are you sure you wish to delete this record?');",@class="glyphicon glyphicon-trash" }));
+                        }).WithPaging(20).WithMultipleFilters()
+    </div>
+</div>
+
+@section Scripts {
+    @Styles.Render("~/Content/gridmvc.css")
+    @Scripts.Render("~/Scripts/gridmvc.min.js")
+}

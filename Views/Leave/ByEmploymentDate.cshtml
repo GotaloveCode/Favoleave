@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Leave.Models.LeaveVM>
+
+@{
+    ViewBag.Title = "Total Leave Taken";
+}
+@using GridMvc.Html
+<div class="container">
+    <h3>@ViewBag.Title</h3>
+    <div class="input-group left">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+        @Html.ActionLink("New Leave", "EmployeeLeave", null, new { @class = "btn btn-info" })
+    </div>
+    <div class="grid-wrap">
+        @Html.Grid(Model).Columns(columns =>
+                        {
+                            columns.Add(model => model.Employee).Sortable(true).Filterable(true);
+                            columns.Add(model => model.leave_type).Sortable(true).Titled("Leave Type").Filterable(true);
+                            columns.Add(model => model.startdate).Sortable(true).Filterable(true).Format("{0:d MMM yyyy}");
+                            columns.Add(model => model.enddate).Sortable(true).Filterable(true).Format("{0:d MMM yyyy}");
+                            columns.Add(model => model.days_used).Sortable(true).Titled("Days Used").Filterable(true);
+                            columns.Add(model => model.Date_Applied).Sortable(true).Format("{0:d MMM yyyy}");
+                            columns.Add(model => model.Comment).Sortable(true);
+                            columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Edit", "EditLeave", "Leave", new { @c.id }, new { @class = "glyphicon glyphicon-edit" }));
+                            columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Delete", "DeleteLeave", "Leave", new { @c.id }, new { @class = "glyphicon glyphicon-trash" }));
+                        }).WithPaging(20).WithMultipleFilters()
+    </div>
+</div>
+@section css{
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+}
+@section Scripts {
+    @Styles.Render("~/Content/gridmvc.css")
+    @Styles.Render("~/Content/bootstrap-datepicker3.min.css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/gridmvc.min.js")
+    @Scripts.Render("~/Scripts/bootstrap-datepicker.min.js")
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".glyphicon-trash").click(function () {
+                if (!confirm("Do you want to delete")) {
+                    return false;
+                }
+                $.post(this.href);
+                var $tr = $(this).closest('tr');
+                $tr.remove();
+                toastr["success"]("Leave deleted successfully");
+                return false;
+
+            });
+        });
+
+    </script>
+}
+

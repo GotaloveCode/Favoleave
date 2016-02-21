@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @Styles.Render("~/Content/css")
+    @RenderSection("css", required: false)
+    <link href="~/Content/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Favo-Leave", "Home", "Home",null, new { @class = "navbar-brand" })
+            </div>
+            <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                <ul class="nav navbar-nav">
+                    <li>
+                        @Html.ActionLink("Home","Home","Home")
+                    </li>
+                    <li>
+                        @Html.ActionLink("Employees", "Employees", "Home")
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Leave <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @Html.ActionLink("List None Accruing", "Leavelist", "Leave")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Total Leave Taken", "ByEmploymentDate", "Leave")
+                            </li>
+                            <li>
+                                @Html.ActionLink("All Leaves", "Leaves", "Leave")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Leave Report", "LeaveListReport", "Leave")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Cummulative Leave Report", "LeaveReport", "Leave")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Leave By Employee Report", "LeaveByEmployee", "Leave")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Leave By Month Report", "LeaveByMonth", "Leave")
+                            </li>
+                            
+
+                            <li>
+                                @Html.ActionLink("Leave Types", "Types", "Leave")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Leave Entitlement", "Entitlement", "Leave")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Leave Approval", "EmployeeLeave", "Leave")
+                            </li>
+                           
+                        </ul>
+                    </li>
+                    <li>
+                        @Html.ActionLink("Holidays", "Index", "Holiday")
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+                            <li>
+                                @Html.ActionLink("Register User", "Registration", "Home")
+                            </li>
+                            <li>
+                                @Html.ActionLink("View Users", "Index", "User")
+                            </li>
+
+                        </ul>
+                    </li>                    
+                    
+                   
+                    <li>
+                        @if (Request.IsAuthenticated)
+                        {
+                            @Html.ActionLink("Logout "+ @User.Identity.Name, "Logout", "Home")
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Log In", "Index", "Home")
+                        }
+                    </li>
+                   
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <h1> &nbsp;</h1>
+    <div id="body" style="min-height:85%">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @if (@TempData["message"] != null)
+            {
+                <div class="hidden" id="tempdata">@TempData["message"]</div>
+            }
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div id="footer">
+            <div class="container">
+                <p class="text-muted">
+                    This is a <a href="http://favotech.net/Contacts.php">Favotech &copy; 06/01/2016</a> Product
+                </p>
+            </div>
+
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/bootstrap.min.js"></script>
+@RenderSection("scripts", required: false)
+</body>
+</html>
+

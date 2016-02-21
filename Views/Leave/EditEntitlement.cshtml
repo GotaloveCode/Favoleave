@@ -1,0 +1,71 @@
+﻿@model Leave.Models.EntitlementVM
+
+@{
+    ViewBag.Title = "Edit Leave Entitlement";
+}
+<div class="container">
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @*@Html.ValidationSummary(true)*@
+
+    <fieldset>
+        <legend>Edit Employee Leave Entitlement</legend>
+        @Html.HiddenFor(model => model.employee_id)
+        @Html.HiddenFor(model => model.leave_entitlement_id)
+        <div class="form-group">
+            @Html.LabelFor(model => model.valid_period)
+        </div>
+        <div class="form-group">
+            @Html.DisplayFor(model => model.valid_period)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.employee)
+        </div>
+        <div class="form-group">
+            @Html.DisplayFor(model => model.employee)
+        </div>
+           
+        <div class="form-group">
+            @Html.LabelFor(model => model.leave_type)
+        </div>
+        <div class="form-group">
+            @Html.DropDownListFor(model => model.leave_type_id, (SelectList)ViewBag.leave_types, "Select Leave Status", new { @class = "input-sm" })
+            @Html.ValidationMessageFor(model => model.leave_type)
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-success" />
+            @Html.ActionLink("Back to List", "Entitlement", null, new { @class = "btn btn-primary" })
+        </div>
+    </fieldset>
+}
+
+</div>
+
+@section css{
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            //toast function
+            function Toast(type, css, msg) {
+                this.type = type;
+                this.css = css;
+                this.msg = msg;
+            }
+            if ($('#tempdata').length > 0) {
+                var t = new Toast('warning', 'toast-top-left', $('#tempdata').text());
+                toastr.options.positionClass = t.css;
+                toastr[t.type](t.msg);
+            }
+
+
+        });
+    </script>
+}
+

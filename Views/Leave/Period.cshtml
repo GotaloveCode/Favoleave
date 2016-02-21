@@ -1,0 +1,84 @@
+﻿@model Leave.Models.leave_period
+
+@{
+    ViewBag.Title = "Period";
+}
+
+<div class="container">
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-warning">@TempData["message"]</div>
+    }
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" });
+        <fieldset>
+            <legend>Leave Period</legend>
+            <div class="form-group">
+                @Html.LabelFor(model => model.startdate, new { @class = "control-label" })
+            </div>
+            <div class="form-group">
+                <div class='input-group date col-md-2' id='datetimepicker1'>
+                    @Html.TextBoxFor(model => model.startdate, new { @class = "form-control", @id = "startdate", placeholder = "d MMM yyyy" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                @Html.ValidationMessageFor(model => model.startdate)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.enddate, new { @class = "control-label" })
+            </div>
+            <div class="form-group">
+                <div class='input-group date col-md-2' id='datetimepicker1'>
+                    @Html.TextBoxFor(model => model.enddate, new { @class = "form-control", @id = "enddate", placeholder = "d MMM yyyy" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                @Html.ValidationMessageFor(model => model.enddate)
+            </div>
+            <div class="form_group">
+                @Html.LabelFor(model => model.active)
+            </div>
+            <div class="form_group">
+                @Html.DropDownList("active", new List<SelectListItem>
+                 {
+                    new SelectListItem{ Text="Active", Value = "1" },
+                    new SelectListItem{ Text="Not-Active", Value = "0" }
+                 }, new { @class = "input-sm" })
+            </div>
+            <div class="form_group">
+                @Html.ValidationMessageFor(model => model.active)
+            </div>
+            <p></p>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+        </fieldset>  
+    }
+    <div>
+        @if (ViewData.ModelState.IsValid)
+        {
+            Html.RenderAction("PeriodList");
+        }
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
+
+    <script>
+
+        $(function () {
+            $("#startdate").datepicker({ format: 'd M yyyy' });
+            $("#enddate").datepicker({ format: 'd M yyyy' });
+        });
+
+    </script>
+}

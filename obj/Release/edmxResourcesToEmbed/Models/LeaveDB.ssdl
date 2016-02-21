@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LeaveModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmpCode" Type="varchar" MaxLength="20" />
+    <Property Name="SurName" Type="varchar" MaxLength="50" />
+    <Property Name="OtherNames" Type="varchar" MaxLength="50" />
+    <Property Name="DateOfEmployment" Type="datetime" />
+    <Property Name="IsDisengaged" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="error">
+    <Key>
+      <PropertyRef Name="ErrorId" />
+    </Key>
+    <Property Name="ErrorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Query" Type="text" />
+    <Property Name="Parameters" Type="varchar" MaxLength="200" />
+    <Property Name="CommandType" Type="varchar" MaxLength="50" />
+    <Property Name="TotalSeconds" Type="float" />
+    <Property Name="Exception" Type="text" />
+    <Property Name="InnerException" Type="text" />
+    <Property Name="RequestId" Type="int" />
+    <Property Name="FileName" Type="varchar" MaxLength="150" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="Active" Type="bit" />
+  </EntityType>
+  <EntityType Name="holiday">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="date" Type="datetime" Nullable="false" />
+    <Property Name="recurs" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="leave">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="startdate" Type="datetime" Nullable="false" />
+    <Property Name="enddate" Type="datetime" Nullable="false" />
+    <Property Name="days" Type="float" Nullable="false" />
+    <Property Name="comments" Type="varchar" MaxLength="250" />
+    <Property Name="leave_type_id" Type="int" Nullable="false" />
+    <Property Name="employee_id" Type="int" Nullable="false" />
+    <Property Name="date_applied" Type="datetime" />
+    <Property Name="period_id" Type="int" Nullable="false" />
+    <Property Name="half_days" Type="float" />
+    <Property Name="work_weekends" Type="bit" />
+  </EntityType>
+  <EntityType Name="leave_entitlement">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="employee_id" Type="int" Nullable="false" />
+    <Property Name="no_of_days" Type="float" />
+    <Property Name="leave_type_id" Type="int" Nullable="false" />
+    <Property Name="from_date" Type="datetime" />
+    <Property Name="to_date" Type="datetime" />
+    <Property Name="credited_date" Type="datetime" />
+    <Property Name="created_by_id" Type="int" />
+  </EntityType>
+  <EntityType Name="leave_period">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="startdate" Type="datetime" Nullable="false" />
+    <Property Name="enddate" Type="datetime" Nullable="false" />
+    <Property Name="active" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="leave_type">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="days" Type="float" Nullable="false" />
+    <Property Name="accrual_type" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="employee_id" Type="int" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="passwordsalt" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="role_id" Type="int" Nullable="false" />
+    <Property Name="status" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="user_role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="role" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_employees_leave_entitlement">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+    <End Role="leave_entitlement" Type="Self.leave_entitlement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="leave_entitlement">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_leave_Employees">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+    <End Role="leave" Type="Self.leave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="leave">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_leave_entitlement_leave_type">
+    <End Role="leave_type" Type="Self.leave_type" Multiplicity="1" />
+    <End Role="leave_entitlement" Type="Self.leave_entitlement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="leave_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="leave_entitlement">
+        <PropertyRef Name="leave_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_leave_leave_period">
+    <End Role="leave_period" Type="Self.leave_period" Multiplicity="1" />
+    <End Role="leave" Type="Self.leave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="leave_period">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="leave">
+        <PropertyRef Name="period_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_leave_leave_type">
+    <End Role="leave_type" Type="Self.leave_type" Multiplicity="1" />
+    <End Role="leave" Type="Self.leave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="leave_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="leave">
+        <PropertyRef Name="leave_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_Employees">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+    <End Role="user" Type="Self.user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LeaveModelStoreContainer">
+    <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="error" EntityType="Self.error" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="holiday" EntityType="Self.holiday" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="leave" EntityType="Self.leave" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="leave_entitlement" EntityType="Self.leave_entitlement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="leave_period" EntityType="Self.leave_period" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="leave_type" EntityType="Self.leave_type" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_role" EntityType="Self.user_role" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_employees_leave_entitlement" Association="Self.FK_employees_leave_entitlement">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="leave_entitlement" EntitySet="leave_entitlement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_leave_Employees" Association="Self.FK_leave_Employees">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="leave" EntitySet="leave" />
+    </AssociationSet>
+    <AssociationSet Name="FK_leave_entitlement_leave_type" Association="Self.FK_leave_entitlement_leave_type">
+      <End Role="leave_type" EntitySet="leave_type" />
+      <End Role="leave_entitlement" EntitySet="leave_entitlement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_leave_leave_period" Association="Self.FK_leave_leave_period">
+      <End Role="leave_period" EntitySet="leave_period" />
+      <End Role="leave" EntitySet="leave" />
+    </AssociationSet>
+    <AssociationSet Name="FK_leave_leave_type" Association="Self.FK_leave_leave_type">
+      <End Role="leave_type" EntitySet="leave_type" />
+      <End Role="leave" EntitySet="leave" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_Employees" Association="Self.FK_user_Employees">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="user" EntitySet="user" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

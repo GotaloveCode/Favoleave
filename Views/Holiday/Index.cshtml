@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Leave.Models.holiday>
+
+@{
+    ViewBag.Title = "Holidays";
+}
+
+@using GridMvc.Html
+<div class="container">
+    <h3>@ViewBag.Title</h3>
+    <div class="input-group left">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+        @Html.ActionLink("New Holiday", "Create", null, new { @class = "btn btn-info" })
+    </div>
+    <div class="grid-wrap">
+        @Html.Grid(Model).Columns(columns =>
+                        {
+                            columns.Add(model => model.name).Sortable(true).Titled("Name").Filterable(true);
+                            columns.Add(model => model.date).Sortable(true).Titled("Date").Filterable(true).Format("{0: dd MMMM yyyy}");
+                            columns.Add(model => model.recurs).Encoded(false).Sanitized(false).Sortable(true).Titled("Recurring").RenderValueAs(c => Html.CheckBox("recurs", @c.recurs == true ? true : false));                           
+                            columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Edit", "Edit", "Holiday", new { @c.id }, new { @class = "glyphicon glyphicon-edit" }));
+                            columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Delete", "Delete", "Holiday", new { @c.id }, new { @class = "glyphicon glyphicon-trash" }));
+                        }).WithPaging(20).WithMultipleFilters()
+    </div>
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Deleted</h4>
+            </div>
+            <div class="modal-body text-success">
+                <p>Holiday deleted successfully. <span class="glyphicon glyphicon-ok"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section css {
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var row;
+            $(".glyphicon-trash").click(function () {
+                row = $(this).closest('tr');
+               
+                if (!confirm("Do you want to delete")) {
+                    return false;
+                }
+
+                $.post(this.href, function (data) {
+                    if (data.Success) {
+                        row.remove();
+                        toastr["success"]("Leave deleted successfully");
+                    }
+                });           
+                
+                return false;
+
+            });
+            if ($('#tempdata').length > 0) {
+                toastr['success']($('#tempdata').text());
+            }
+
+        });
+
+    </script>
+}

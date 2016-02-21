@@ -1,0 +1,69 @@
+﻿@{ Layout = "";}
+@model Leave.Models.LoginVM
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <title>Login</title>
+    <link href="~/Content/login-box.css" rel="stylesheet" type="text/css" />
+    
+</head>
+
+<body>
+
+
+    @*<div style="padding: 100px 0 0 250px;">*@
+    <div class="centered">
+
+
+        <div>
+            <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                <div class="flipper">
+                    <div class="front">
+                        <img src="~/Images/ftl.png" width="70" height="70" /> 
+                    </div>
+                    <div class="back">
+                        Favoleave Login
+                    </div>
+                </div>
+            </div>
+                 
+                @using (@Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @TempData["ErrorDetails"]
+                    <span style="margin-left:40px; color:red;"> @Html.ValidationSummary(true, "Correct the below errors to proceed")</span>
+                    <div style="width:100%">
+                        <div id="login-box-name" style="margin-top:20px;">UserName:</div>
+                        <div id="login-box-field" style="margin-top:20px;">
+                            @Html.TextBoxFor(a => a.username, new { @class = "form-login" })
+                            <span style="margin-top:5px; color:red;">@Html.ValidationMessageFor(a => a.username)</span>
+                        </div>
+                    </div>
+                    <div style="width:100%">
+                        <div id="login-box-name">Password:</div>
+                        <div id="login-box-field">
+                            @Html.PasswordFor(a => a.password, new { @class = "form-login" })
+                            <span style="margin-top:5px; color:red;">@Html.ValidationMessageFor(a => a.password)</span>
+                        </div>
+                    </div>
+
+                    <br />
+                    <input type="image" alt="Login" src="~/images/login-btn.png" width="103" height="42" style="margin-left:90px; " />
+
+                }
+
+
+
+
+            </div>
+
+</div>
+
+
+    @Scripts.Render("~/bundles/jquery") 
+    @Scripts.Render("~/bundles/jqueryval")
+
+</body>
+</html>

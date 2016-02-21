@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Employee Leave";
+}
+
+<div class="container">
+    @using (Html.BeginForm("AssignLeave","Leave",FormMethod.Get))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Search Employee Entitlement For Leave</legend>
+            <div class="form-group">
+                @Html.Label("Employee")
+                @Html.DropDownList("id", new SelectList(ViewBag.employees, "EmployeeID", "names"), new { @class = "input-sm" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-success" />
+            </div>
+        </fieldset>
+    }
+</div>

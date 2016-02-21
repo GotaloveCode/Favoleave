@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1654266d5ce64f02838e65aa863691c2" Name="Diagram1" ZoomLevel="85">
+        <EntityTypeShape EntityType="LeaveModel.leave_entitlement" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="LeaveModel.leave_type" Width="1.5" PointX="0.75" PointY="1.125" />
+        <EntityTypeShape EntityType="LeaveModel.user" Width="1.5" PointX="3" PointY="4.75" />
+        <EntityTypeShape EntityType="LeaveModel.user_role" Width="1.5" PointX="0.75" PointY="8.25" />
+        <AssociationConnector Association="LeaveModel.FK_leave_entitlement_leave_type" />
+        <AssociationConnector Association="LeaveModel.FK_user_user_role" />
+        <EntityTypeShape EntityType="LeaveModel.Employee" Width="1.5" PointX="0.75" PointY="4.75" />
+        <AssociationConnector Association="LeaveModel.FK_employees_leave_entitlement" />
+        <AssociationConnector Association="LeaveModel.FK_user_Employees" />
+        <EntityTypeShape EntityType="LeaveModel.leave_period" Width="1.5" PointX="8.375" PointY="0.875" />
+        <EntityTypeShape EntityType="LeaveModel.holiday" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="LeaveModel.leave" Width="1.5" PointX="10.625" PointY="2.375" />
+        <AssociationConnector Association="LeaveModel.FK_leave_Employees" />
+        <AssociationConnector Association="LeaveModel.FK_leave_leave_period" />
+        <AssociationConnector Association="LeaveModel.FK_leave_leave_type" />
+        <EntityTypeShape EntityType="LeaveModel.error" Width="1.5" PointX="5.375" PointY="3.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

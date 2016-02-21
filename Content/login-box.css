@@ -1,0 +1,63 @@
+/*#login-box{width:333px;height:352px;padding:58px 76px 0;color:#ebebeb;font:12px Arial,Helvetica,sans-serif;background:url(/images/login-box-backg.png) left top no-repeat}#login-box img{border:none}#login-box-name{float:left;display:inline;width:80px;text-align:right;padding:14px 10px 0 0;margin:0 0 7px}#login-box-field{float:left;display:inline;width:230px;margin:0 0 7px}.form-login{width:205px;padding:10px 4px 6px 3px;border:1px solid #0d2c52;background-color:#1e4f8a;font-size:16px;color:#ebebeb}.login-box-options{clear:both;padding-left:87px;font-size:11px}.login-box-options a{color:#ebebeb;font-size:11px}*/
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -205px;
+  margin-left: -242.5px;
+  color:#ebebeb;
+  font:12px Arial,Helvetica,sans-serif;  
+  background:url(/images/login-box-backg.png) left top no-repeat;
+  padding:58px 76px 0;
+  height:100%;
+}
+.centered img{border:none}
+#login-box-name{float:left;display:inline;width:80px;text-align:right;padding:14px 10px 0 0;margin:0 0 7px}
+#login-box-field{float:left;display:inline;width:230px;margin:0 0 7px}
+
+/* entire container, keeps perspective */
+
+	/* flip the pane when hovered */
+	.flip-container:hover .flipper, .flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	}
+
+.flip-container, .front, .back {
+	width: 70px;
+	height: 70px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+    
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+    color: #ebebeb; 
+    font: bold 20px Calibri
+}
+                                                                                                                                      .form-login{width:205px;padding:10px 4px 6px 3px;border:1px solid #0d2c52;background-color:#1e4f8a;font-size:16px;color:#ebebeb}
+                                                                                                                                                                                                            .login-box-options{clear:both;padding-left:87px;font-size:11px}
+                                                                                                                                                                                                                                                                                                                                            .login-box-options a{color:#ebebeb;font-size:11px}

@@ -1,0 +1,39 @@
+﻿@model Leave.Models.AddEntitlementVM
+
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Add Entitlement</legend>
+            @Html.HiddenFor(model => model.from_date)
+            <div class="form-group">
+                @Html.LabelFor(model => model.employee_id)
+            </div>
+            <div class="form-group">
+                @Html.DropDownListFor(model => model.employee_id, Model.employees, "Select Employee", new { @class = "input-sm" })
+                @Html.ValidationMessageFor(model => model.employee_id)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.leave_type_id)
+            </div>
+            <div class="form-group">
+                @Html.DropDownListFor(model => model.leave_type_id, Model.leave_types, "Select Leave Type", new { @class = "input-sm" })
+                @Html.ValidationMessageFor(model => model.leave_type_id)
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+                @Html.ActionLink("Back to List", "Entitlement", null, new { @class = "btn btn-primary" })
+            </div>
+        </fieldset>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

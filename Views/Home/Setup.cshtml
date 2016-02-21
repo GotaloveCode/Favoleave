@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Setup";
+}
+<div class="container">
+    <h3>Setup Information</h3>
+    <article >
+        <dl>
+            <dt>Setting Up Leave</dt>
+            <dd>
+                <ol>
+                    <li>Create @Html.ActionLink("Leave Period", "Period", "Leave") i.e. duration of work year.This step is done only once per year</li>
+                    <li>Create @Html.ActionLink("Leave Types", "Types", "Leave") e.g. Maternity leave,Annual leave etc. </li>
+                    <li>Create @Html.ActionLink("Leave Entitlement", "Entitlement", "Leave") i.e. Each employee is entitled to annual leave</li>
+                    <li>@Html.ActionLink("Assign Leave", "EmployeeLeave", "Leave") to the employee</li>
+                </ol>
+            </dd>
+            <dt>Setting Up Users</dt>
+            <dd>
+                <ol>
+                    <li>The admin or registered user @Html.ActionLink("creates user", "Registration", "Home") account</li>
+                    <li>The admin then views user account pending activation on the @Html.ActionLink("Dashboard", "Home", "Home") or Home Panel</li>
+                    <li>The admin then @Html.ActionLink("activates user account", "Edit", "User")</li>
+                </ol>
+            </dd>
+            <dt>User Types</dt>
+            <dd>
+                There are two main types of users:
+                <ol>
+                    <li>The Admin Account</li>
+                    <li>The User Account</li>                    
+                </ol>
+            </dd>
+            <dt>The Admin Account</dt>
+            <dd>
+                Has all rights(RWX):
+                <ol>
+                    <li> <i class="glyphicon glyphicon-zoom-in"></i> Read/View (R) Records </li>
+                    <li> <i class="glyphicon glyphicon-pencil"></i> Write/Create(W) Records </li>
+                    <li> <i class="glyphicon glyphicon-edit"></i> Edit/Update(W) Records</li>
+                    <li> <i class="glyphicon glyphicon-remove"></i> Delete(X) Records </li>
+                </ol>
+            </dd>
+            <dt>The User Account</dt>
+            <dd>
+               Can only Read,View and Update his details.
+            </dd>
+            <dt>General Use</dt>
+            <dd>
+                <ol>
+                    <li>Search/Filter: Click on <i class="glyphicon glyphicon-filter"></i> next to the column name and select critera</li>
+                    <li><i class="glyphicon glyphicon-sort"></i> Sort: Click on column name to order by ascending,click again on same column to order by descending</li>
+                </ol>
+            </dd>
+        </dl>
+    </article>
+</div>

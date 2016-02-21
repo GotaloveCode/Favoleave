@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Leave.Models.HomeVM>
+
+@{
+    ViewBag.Title = "Admin Home";
+}
+
+<div class="container">
+
+     <div class="panel panel-default">
+        <div class="panel-heading"><a href="#"><h3> <i class="glyphicon glyphicon-th-large"></i> Dashboard</h3></a></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <a href="@Url.Action("Setup", "Home")">
+                        <i style="font-size: 65px;" class="glyphicon glyphicon-cog"></i>
+                        <h5>Setup Manual</h5>
+                    </a>
+                </div>
+                @if (this.User.IsInRole("Admin"))
+                {
+                    <div class="col-md-2">
+                        <a href="@Url.Action("Period", "Leave")">
+                            <i style="font-size: 65px;" class="glyphicon glyphicon-calendar"></i>
+                            <h5>Configure Period</h5>
+                        </a>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="@Url.Action("Registration", "Home")">
+                            <i style="font-size: 65px;" class="glyphicon glyphicon-user"></i>
+                            <h5>Register User</h5>
+                        </a>
+                    </div>
+
+                    <div class="col-md-2">
+                        <a href="@Url.Action("EmployeeLeave", "Leave")">
+                            <img src="@Url.Content("~/images/Applyleave.png")" alt="Assign Leave" />
+                            <h5>Assign Leave</h5>
+                        </a>
+                    </div>
+                }
+                <div class="col-md-2">
+                    <a href="@Url.Action("Entitlement","Leave")">
+                        <img src="@Url.Content("~/images/Applyleave.png")" alt="Leave Entitlement" />
+                        <h5>Leave Entitlement</h5>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="@Url.Action("Leavelist","Leave")">
+                        <i style="font-size: 65px;" class="glyphicon glyphicon-list-alt"></i>
+                        <h5> View Leaves</h5>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <fieldset style="border:1px outset; background-color:#f8f8f8; padding:4px;">
+                        <legend class="info"><a href="#"> Employees Due For Leave <span class="label label-primary">@Html.Raw(Model.Count())</span></a></legend>
+                        <ul class="list-group">
+                            @foreach (var item in Model)
+                            {
+                                var data = HttpUtility.HtmlDecode(String.Format("{0} {1}", @Html.DisplayFor(modelItem => item.Employee), @Html.DisplayFor(modelItem => item.Duration)));
+                                <li class="list-group-item">
+                                    @Html.ActionLink(data, "EditLeave", "Leave", new { id = item.id }, null)
+                                </li>
+                            }
+                        </ul>
+                    </fieldset>
+                </div>
+                <div class="col-md-5">
+                    @{Html.RenderAction("user_request", "Home");}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-1"></div>
+@section css {
+<link href="~/Content/toastr.min.css" rel="stylesheet" />
+}
+@section Scripts {    
+<script src="~/Scripts/toastr.min.js"></script>
+<script>
+    if ($('#tempdata').length>0)
+        toastr["success"]($('#tempdata').text());
+</script>
+}
