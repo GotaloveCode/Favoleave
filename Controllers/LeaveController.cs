@@ -437,6 +437,7 @@ namespace Leave.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AssignLeave(AssignLeaveVM e)
         {
+            string message = "";
             var exists = db.leaves.Where(l => l.startdate >= e.startdate && l.enddate <= e.enddate && l.employee_id == e.employee_id);
             int periodid = db.leave_period.Where(x => x.active == 1).Select(x => x.id).SingleOrDefault();
             if (exists.Any())
@@ -477,10 +478,10 @@ namespace Leave.Controllers
                         double dbtw = (e.enddate - e.startdate).TotalDays + 1;
                         l.days = (e.enddate - e.startdate).TotalDays + 1 - e.holidays - weekends + weekendholidays - (e.half_days / 2) - pushedholiday;
                     }
-                    if (l.days <= 0)
+                    if (l.days < 0) //you cannot take -ve leave days 
                     {
-                        TempData["message"] = "Employee already has leave assigned on those days";
-                        return RedirectToAction("Home", "Home");
+                        l.days = 0; //so make them 0 used
+                        message  = "No leave days used: weekend or holiday!<br>";
                     }
                     l.comments = e.comments;
                     l.leave_type_id = e.leave_type_id;
@@ -495,7 +496,8 @@ namespace Leave.Controllers
                 {
                     TempData["message"] = ex.ToString();
                 }
-                TempData["message"] = "Leave applied successfully";
+                message = "Leave applied successfully";
+                TempData["message"] = message;
                 return RedirectToAction("Home", "Home");
             }
             else

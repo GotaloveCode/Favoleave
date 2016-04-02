@@ -29,7 +29,7 @@
           <Property Name="InnerException" Type="text" />
           <Property Name="RequestId" Type="int" />
           <Property Name="FileName" Type="varchar" MaxLength="150" />
-          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="Active" Type="bit" />
         </EntityType>
         <EntityType Name="holiday">
@@ -241,7 +241,6 @@
             <End Role="user" EntitySet="users" />
           </AssociationSet>
           <EntitySet Name="leave_period" EntityType="LeaveModel.leave_period" />
-          <EntitySet Name="holidays" EntityType="LeaveModel.holiday" />
           <EntitySet Name="leaves" EntityType="LeaveModel.leave" />
           <AssociationSet Name="FK_leave_Employees" Association="LeaveModel.FK_leave_Employees">
             <End Role="Employee" EntitySet="Employees" />
@@ -256,6 +255,7 @@
             <End Role="leave" EntitySet="leaves" />
           </AssociationSet>
           <EntitySet Name="errors" EntityType="LeaveModel.error" />
+          <EntitySet Name="holidays" EntityType="LeaveModel.holiday" />
           </EntityContainer>
         <EntityType Name="leave_entitlement">
           <Key>
@@ -377,15 +377,6 @@
           <Property Name="active" Type="Byte" Nullable="false" />
           <NavigationProperty Name="leaves" Relationship="LeaveModel.FK_leave_leave_period" FromRole="leave_period" ToRole="leave" />
           </EntityType>
-        <EntityType Name="holiday">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="recurs" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="leave">
           <Key>
             <PropertyRef Name="id" />
@@ -454,8 +445,17 @@
           <Property Name="InnerException" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="RequestId" Type="Int32" />
           <Property Name="FileName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" Nullable="false" />
           <Property Name="Active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="holiday">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="recurs" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -530,16 +530,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="holidays">
-            <EntityTypeMapping TypeName="LeaveModel.holiday">
-              <MappingFragment StoreEntitySet="holiday">
-                <ScalarProperty Name="recurs" ColumnName="recurs" />
-                <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="leaves">
             <EntityTypeMapping TypeName="LeaveModel.leave">
               <MappingFragment StoreEntitySet="leave">
@@ -571,6 +561,16 @@
                 <ScalarProperty Name="Parameters" ColumnName="Parameters" />
                 <ScalarProperty Name="Query" ColumnName="Query" />
                 <ScalarProperty Name="ErrorId" ColumnName="ErrorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="holidays">
+            <EntityTypeMapping TypeName="LeaveModel.holiday">
+              <MappingFragment StoreEntitySet="holiday">
+                <ScalarProperty Name="recurs" ColumnName="recurs" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

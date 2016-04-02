@@ -23,7 +23,7 @@ namespace Leave.Models
         public string InnerException { get; set; }
         public Nullable<int> RequestId { get; set; }
         public string FileName { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public Nullable<bool> Active { get; set; }
     }
 }

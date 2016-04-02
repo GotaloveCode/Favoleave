@@ -18,7 +18,6 @@ namespace Leave.Models
         public LeaveEntities()
             : base("name=LeaveEntities")
         {
-            System.Data.Entity.Infrastructure.Interception.DbInterception.Add(new DBinterceptor.DatabaseLogger());
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -32,8 +31,8 @@ namespace Leave.Models
         public virtual DbSet<user_role> user_role { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<leave_period> leave_period { get; set; }
-        public virtual DbSet<holiday> holidays { get; set; }
         public virtual DbSet<leave> leaves { get; set; }
         public virtual DbSet<error> errors { get; set; }
+        public virtual DbSet<holiday> holidays { get; set; }
     }
 }
